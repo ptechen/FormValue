@@ -1,0 +1,2 @@
+[workspace]
+members = ["from_value_derive", "main"]
