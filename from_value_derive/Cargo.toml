@@ -7,7 +7,7 @@ documentation = "https://github.com/ptechen/FromValue/blob/main/README.md"
 repository = "https://github.com/ptechen/FromValue.git"
 license = "MIT OR Apache-2.0"
 #readme = "README.md"
-description = "Rust structure to slice."
+description = "Implement impl Form&lt;CustomStruct> for serde_json::Value"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
