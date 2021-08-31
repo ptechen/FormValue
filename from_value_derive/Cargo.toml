@@ -1,6 +1,6 @@
 [package]
 name = "from_value_derive"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2018"
 homepage = "https://github.com/ptechen"
 documentation = "https://github.com/ptechen/FromValue/blob/main/README.md"
