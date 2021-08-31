@@ -13,11 +13,22 @@ pub fn from_derive(input: TokenStream) -> TokenStream {
         Data::Struct(s) => {
             if let Fields::Named(name_fields) = s.fields {
                 let a = name_fields.named;
+
                 for field in a {
+                    let ty = get_filed_type(&field.ty);
                     let field = field.ident.as_ref().unwrap();
-                    let insert_token = quote! {
-                        map.insert(stringify!(#field).to_string(), Value::from(params.#field.to_owned()));
-                    };
+                    let insert_token;
+                    if ty == "Option" {
+                            insert_token = quote! {
+                            let v = serde_json::to_value(params.#field.as_ref()).unwrap_or(Value::Null);
+                            map.insert(stringify!(#field).to_string(), v);
+                        };
+                    } else {
+                            insert_token = quote! {
+                            map.insert(stringify!(#field).to_string(), Value::from(params.#field.to_owned()));
+                        };
+                    }
+
                     insert_tokens.push(insert_token);
                 }
             }
@@ -34,4 +45,16 @@ pub fn from_derive(input: TokenStream) -> TokenStream {
         }
     };
     proc_macro::TokenStream::from(tokens)
+}
+
+fn get_filed_type(ty: &syn::Type) -> String {
+    if let syn::Type::Path(syn::TypePath {
+                               ref path,
+                               ..
+                           }) = ty {
+        if let Some(seg) = path.segments.last() {
+            return seg.ident.to_string();
+        }
+    }
+    String::new()
 }
